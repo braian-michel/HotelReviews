@@ -3,7 +3,7 @@ from geopy.geocoders import Nominatim
 
 geolocalizador = Nominatim(user_agent="Mi_geolocalizador")
 
-data = pd.read_csv(r"C:\Users\Braian\Documents\Braian Cursos\Udemy\HTML y CSS\Portafolio\Hotel_Reviews.csv")
+data = pd.read_csv(r"Hotel_Reviews.csv")
 
 data['lat'] = data['lat'].astype(str)
 data['lng'] = data['lng'].astype(str)
@@ -57,7 +57,7 @@ localiz = localiz.groupby(['Hotel_Address', 'Hotel_Name', 'Average_Score','lat_l
 
 # Se pasa el Dataframe agrupado (localiz) a un csv y luego se lo importa (con el nombre htl_loc) para que las columnas agrupadas pasen a configurarse como columnas del Dataframe
 localiz.to_csv('geoloc.csv')
-htl_loc = pd.read_csv(r"C:\Users\Braian\Documents\Braian Cursos\Udemy\HTML y CSS\Portafolio\geoloc.csv")
+htl_loc = pd.read_csv(r"geoloc.csv")
 
 # Generamos columna "Hotel_City" a partir del geolocalizador
 city_list = []
@@ -87,6 +87,8 @@ htl_loc['Hotel_Country'] = country_list
 
 # Generamos un Dataframe con las columnas que nos interesan (en el orden deseado) para los datos de localización del hotel
 htl_localiz = htl_loc[['Hotel_Address', 'Hotel_Name','Average_Score','Total_Number_of_Reviews','lat','lng','Hotel_City','Hotel_Country']]
+
+# Completamos los valores faltantes de Hotel_City y Hotel_Country a partir d los datos de "Hotel_Address"
 index_ = range(len(htl_localiz))
 cities = list(htl_localiz['Hotel_City'].unique())
 countries = list(htl_localiz['Hotel_Country'].unique())
